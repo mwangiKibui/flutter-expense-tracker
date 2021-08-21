@@ -3,16 +3,43 @@ import "package:intl/intl.dart";
 
 class NewTransaction extends StatefulWidget {
   final Function transactionHandler;
-  NewTransaction(this.transactionHandler);
+  NewTransaction(this.transactionHandler) {
+    print("Constructor new transaction widget");
+  }
 
   @override
-  _NewTransactionState createState() => _NewTransactionState();
+  _NewTransactionState createState() {
+    print("Create state new transaction widget");
+    return _NewTransactionState();
+  }
 }
 
 class _NewTransactionState extends State<NewTransaction> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
   var _selectedDate;
+
+  _NewTransactionState() {
+    print("Constructor new transaction state");
+  }
+
+  @override
+  void initState() {
+    print("init state");
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant NewTransaction oldWidget) {
+    print("did update widget");
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    print("dispose");
+    super.dispose();
+  }
 
   void _submitData() {
     if (_amountController.text.isEmpty) {
@@ -46,50 +73,56 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      child: Container(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              TextField(
-                decoration: InputDecoration(labelText: "Title"),
-                controller: _titleController,
-              ),
-              TextField(
-                decoration: InputDecoration(labelText: "Amount"),
-                controller: _amountController,
-                keyboardType: TextInputType.number,
-                onSubmitted: (_) => _submitData(),
-              ),
-              Container(
-                height: 70,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(_selectedDate == null
-                          ? "No date chosen"
-                          : "Picked date: ${DateFormat.yMd().format(_selectedDate)}"),
-                    ),
-                    FlatButton(
-                      onPressed: _presentDatePicker,
-                      child: Text(
-                        "Choose date",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      textColor: Theme.of(context).primaryColor,
-                    )
-                  ],
+    return SingleChildScrollView(
+      child: Card(
+        elevation: 5,
+        child: Container(
+            padding: EdgeInsets.only(
+                top: 10,
+                left: 10,
+                right: 10,
+                bottom: MediaQuery.of(context).viewInsets.bottom + 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                TextField(
+                  decoration: InputDecoration(labelText: "Title"),
+                  controller: _titleController,
                 ),
-              ),
-              RaisedButton(
-                  onPressed: _submitData,
-                  color: Theme.of(context).primaryColor,
-                  textColor: Theme.of(context).textTheme.button?.color,
-                  child: Text("Add transaction"))
-            ],
-          )),
+                TextField(
+                  decoration: InputDecoration(labelText: "Amount"),
+                  controller: _amountController,
+                  keyboardType: TextInputType.number,
+                  onSubmitted: (_) => _submitData(),
+                ),
+                Container(
+                  height: 70,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(_selectedDate == null
+                            ? "No date chosen"
+                            : "Picked date: ${DateFormat.yMd().format(_selectedDate)}"),
+                      ),
+                      FlatButton(
+                        onPressed: _presentDatePicker,
+                        child: Text(
+                          "Choose date",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        textColor: Theme.of(context).primaryColor,
+                      )
+                    ],
+                  ),
+                ),
+                RaisedButton(
+                    onPressed: _submitData,
+                    color: Theme.of(context).primaryColor,
+                    textColor: Theme.of(context).textTheme.button?.color,
+                    child: Text("Add transaction"))
+              ],
+            )),
+      ),
     );
   }
 }
